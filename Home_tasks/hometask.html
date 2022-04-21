@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3"></script>
+
+</head>
+<body>
+    <div id="app">
+        <div>
+            <div>
+                <label>
+                    Назва страви
+                    <input type="text" v-model="newFoodTitle">
+                </label>
+            </div>
+            <div>
+                <label>
+                    Ціна страви
+                    <input type="number" v-model="newFoodPrice">
+                </label>
+            </div>
+            <button @click="onAddFood">Додати страву</button>
+        </div>
+        <hr />
+        <div>
+            <label>
+                Назва для фільтрації
+                <input type="text" v-model="searchText">
+            </label>
+        </div>
+
+        <table v-if="filteredFoodList.length>0" border="2px">
+            <tr>
+                <th>Назва страви</th>
+                <th>Ціна</th>
+            </tr>
+            <tr v-for="food in filteredFoodList" :key="food.id">
+                <td>{{food.title}}</td>
+                <td>{{food.price}} грн</td>
+                <td>
+                    <button @click="onCheck(food.id)">Замовити</button>
+                </td>
+                <td>
+                    <button @click="onDelete(food.id)">X</button>
+                </td>
+            </tr>
+        </table>
+        <div v-else>Вибачте. Страв немає</div>
+        <hr>
+        <h1>Замовлені страви</h1>
+        <table border="2px">
+            <tr>
+                <th>Назва страви</th>
+                <th>Ціна</th>
+            </tr>
+            <tr v-for="food in checkList" :key="food.id">
+                <td>{{food.title}}</td>
+                <td>{{food.price}} грн</td>
+                <td>
+                    <button @click="onReady(food.id)">Готово</button>
+                </td>
+            </tr>
+        </table>
+        <h1>Готові до видачі страви</h1>
+        <table border="2px">
+            <tr>
+                <th>Назва страви</th>
+                <th>Ціна</th>
+            </tr>
+            <tr v-for="food in readyList" :key="food.id">
+                <td>{{food.title}}</td>
+                <td>{{food.price}} грн</td>
+                <td>
+                    <button @click="onPrepared(food.id)">Видано</button>
+                </td>
+            </tr>
+        </table>
+        <h1>Видані страви</h1>
+        <table border="2px">
+            <tr>
+                <th>Назва страви</th>
+                <th>Ціна</th>
+            </tr>
+            <tr v-for="food in preparedList" :key="food.id">
+                <td>{{food.title}}</td>
+                <td>{{food.price}} грн</td>
+            </tr>
+        </table>
+        <h2>Сумма: {{fullPrice}} грн</h2>
+    </div>
+    
+    <script>
+      Vue.createApp({
+        data() {
+          return {
+              searchText:null,
+              newFoodTitle:null,
+              newFoodPrice:null,
+            foodList: [
+                {
+                    id:1,
+                    title:'Борщ',
+                    price: 200,
+                },
+                {
+                    id:2,
+                    title:'Кофе',
+                    price: 400,
+                },
+                {
+                    id:3,
+                    title:'Чай',
+                    price: 350,
+                },
+                {
+                    id:4,
+                    title:'Булочки',
+                    price: 250,
+                },
+                {
+                    id:5,
+                    title:'Піца',
+                    price: 100,
+                }
+            ],
+                checkList: [],
+                readyList: [],
+                preparedList: [],
+                fullPrice: null
+          }
+        },
+        computed: {
+            filteredFoodList() {
+                if(this.searchText){
+                const s = this.searchText.toLowerCase()
+                return this.foodList.filter(food=>food.title.includes(this.searchText))
+                }
+                else return this.foodList
+            }
+        },
+        methods:{
+            onAddFood(){
+                this.foodList.push(
+                    {
+                        id:new Date().getTime(),
+                        title: this.newFoodTitle,
+                        price: this.newFoodPrice
+                    }
+                )
+            },
+            onDelete(idToRemove){
+                this.foodList = this.foodList.filter(food=>food.id!==idToRemove)
+            },
+            onCheck(toCheck){
+                    const checkIndex = this.foodList.findIndex(food=> 
+                    food.id===toCheck)
+                if(checkIndex!== -1){
+                    this.checkList.push(this.foodList[checkIndex])
+                }
+            },
+            onReady(toReady){
+                    const readyIndex = this.checkList.findIndex(food=> 
+                    food.id===toReady)
+                if(readyIndex!== -1){
+                    this.readyList.push(this.checkList[readyIndex])
+                    this.checkList.splice(readyIndex,1)
+                }
+            },
+            onPrepared(toPrepared){
+                    const preparedIndex = this.readyList.findIndex(food=> 
+                    food.id===toPrepared)
+                if(preparedIndex!== -1){
+                    this.preparedList.push(this.readyList[preparedIndex])
+                    this.fullPrice += this.readyList[preparedIndex].price
+                    this.readyList.splice(preparedIndex,1)
+                }
+            }
+        }
+      }).mount('#app')
+    </script>
+</body>
+</html>

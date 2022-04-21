@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <style>
+      .cell {
+        width: 22px;
+        height: 22px;
+        text-align: center;
+      }
+      .mine {
+        background-color: red;
+      }
+      .free {
+        background-color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Гра сапер</h1>
+      <div>
+        <label>
+          Кількість рядків
+          <input
+            type="number"
+            v-model="rowsNumber"
+            placeholder="Введіть к-сть рядків"
+          />
+        </label>
+      </div>
+      <div>
+        <label
+          >Кількість стовпців
+          <input
+            type="number"
+            v-model="colsNumbers"
+            placeholder="Введіть к-сть стовпців"
+          />
+        </label>
+      </div>
+      <button @click="generateGame">Згенерувати гру</button>
+      <table v-if="gameField">
+        <tr v-for="(row,rowInd) in gameField" :key="`r-${rowInd}`">
+          <td v-for="(cell,cellInd) in row" :key="`c-${rowInd}-${cellInd}`">
+            <button v-if="!cell.opened" @click="onCheckCell(cell)">*</button>
+            <div
+              v-else
+              class="cell"
+              :class="{
+              'mine':cell.opened && cell.hasMine,
+              'free':cell.opened && !cell.hasMine,
+            }"
+            >
+              {{cell.hasMine}}
+            </div>
+          </td>
+        </tr>
+      </table>
+      <div v-else>Спочатку згенеруйте гру</div>
+      <div>Кількість мін: {{mineNumber}}</div>
+      <div>Кількість вільних клітинок: {{freeNumber}}</div>
+      <div>
+        <button :disabled="!gameHistory.length" @click="goBack">Back</button>
+      </div>
+    </div>
+
+    <script>
+      Vue.createApp({
+        data() {
+          return {
+            rowsNumber: null,
+            colsNumbers: null,
+            gameField: null,
+            mineNumber: 0,
+            freeNumber: 0,
+            gameHistory: [],
+          }
+        },
+        methods: {
+          goBack() {
+            const lastItem = this.gameHistory.pop()
+            this.mineNumber = lastItem.mineNumber
+            this.freeNumber = lastItem.freeNumber
+            this.gameField = JSON.parse(lastItem.gameField)
+          },
+          generateGame() {
+            this.gameField = []
+            for (let i = 0; i < this.rowsNumber; i++) {
+              const row = []
+              for (let j = 0; j < this.colsNumbers; j++) {
+                row.push({
+                  hasMine: Math.floor(Math.random() * 2),
+                  opened: false,
+                })
+              }
+              this.gameField.push(row)
+            }
+          },
+          onCheckCell(cell) {
+            this.gameHistory.push({
+              gameField: JSON.stringify(this.gameField),
+              mineNumber: this.mineNumber,
+              freeNumber: this.freeNumber,
+            })
+            
+            console.log(this.gameHistory)
+            if (cell.hasMine) this.mineNumber++
+            else this.freeNumber++
+            cell.opened = true
+
+
+            let arr=[1,2,34]
+            let b=arr
+          },
+        },
+      }).mount('#app')
+    </script>
+  </body>
+</html>

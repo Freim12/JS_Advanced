@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+<h1>Конвертер валют</h1>
+<div id="app">
+    <div>
+        <label>
+            Кількість доларів
+            <input 
+            type="number" 
+            v-model="dollarAmount" 
+            placeholder="Введіть кількість доларів">
+        </label>
+    </div>
+    <div>
+        <label>
+            Курс долара
+            <input 
+            type="number" 
+            v-model="course" 
+            placeholder="Введіть курс доларів">
+        </label>
+    </div>
+    <div>
+        <label>
+            Кількість гривень
+            <input 
+            type="number" 
+            :value="grivnasAmount" 
+            placeholder="Кількість гривень"
+            disabled>
+        </label>
+    </div>
+</div>
+
+<script>
+  Vue.createApp({
+    data() {
+      return {
+        dollarAmount:null,
+        course:null,
+      }
+    },
+    computed:{
+        grivnasAmount(){
+            return this.dollarAmount*this.course
+        },
+    },
+  }).mount('#app')
+</script>
+    
+</body>
+</html>

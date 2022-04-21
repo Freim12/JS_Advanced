@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>Перекладач</h1>
+        <div>
+            Введіть слово
+            <input type="text" v-model="engWord" placeholder="Введіть слово">
+            <button @click="translate()">Переклад</button>
+        </div>
+        <div>
+            <h2>Переклад</h2>
+            <input type="text" :value="ukrWord">
+        </div>
+    </div>
+    <script>
+        Vue.createApp({
+          data() {
+            return {
+                engWord: null,
+                ukrWord: null,
+                eng:[
+                {
+                    id: 1,
+                    word: 'table',
+                    ua: 'стіл'
+                },
+                {
+                    id: 2,
+                    word: 'food',
+                    ua: 'їжа'
+                },
+                {
+                    id: 3,
+                    word: 'head',
+                    ua: 'голова'
+                }
+                ]
+            }
+          },
+          computed: {
+            translate(){
+                const wordObj = this.eng.find((word)=>word.eng == this.word)
+               if(wordObj) this.ukrWord = wordObj . ua
+               else this.ukrWord = 'no word'
+              } 
+          },
+          methods:{
+
+          }
+        }).mount('#app')
+      </script>
+</body>
+</html>

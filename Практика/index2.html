@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+<h1>Превірка додавання</h1>
+<div id="app">
+    <div>
+        <label>
+            Перше число
+            <input 
+            type="number" 
+            v-model="firstNum" 
+            placeholder="Введіть перше чилсло">
+        </label>
+    </div>
+    <div>
+        <label>
+            Друге число
+            <input 
+            type="number" 
+            v-model="secondNum" 
+            placeholder="Введіть друге число">
+        </label>
+    </div>
+    <div>
+        <label>
+            Ваша відповідь
+            <input 
+            type="number" 
+            v-model="answer" 
+            placeholder="Введіть відповідь">
+        </label>
+    </div>
+    <div>
+        <button @click="checkAnswer">Перевірити</button>
+    </div>
+    <div v-if="rightAns!==answer">
+        Правильна відповідь: {{rightAns}}
+    </div>
+    <div>
+        <span 
+        :title="correctTitle">
+        Правильних: {{correctAns}}
+    </span>
+    <br>
+        <span 
+        :title="wrongTitle">
+        Неправильних: {{wrongAns}}
+    </span>
+    </div>
+</div>
+
+<script>
+  Vue.createApp({
+    data() {
+      return {
+        firstNum:0,
+        secondNum:0,
+        answer:0,
+        rightAns:0,
+        correctAns:0,
+        wrongAns:0
+      }
+    },
+    methods: {
+        checkAnswer(){
+            this.rightAns=this.firstNum+this.secondNum
+            if(this.rightAns===this.answer) this.correctAns++
+            else this.wrongAns++
+        }
+    },
+    computed:{
+        wrongTitle(){
+            return `${this.wrongAns} - це кількість неправильних відповідей`
+        },
+        correctTitle(){
+            return `${this.wrongAns} - це кількість неправильних відповідей`
+        },
+
+    },
+  }).mount('#app')
+</script>
+    
+</body>
+</html>

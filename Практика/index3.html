@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3"></script>
+
+</head>
+<body>
+    <div id="app">
+        <!-- <div v-for="(task,ind) in taskList" :key="task.id">
+            <span>{{ind+1}} - {{task.title}} - {{task.priority}}</span>
+        </div> -->
+
+        <div>
+            <div>
+                <label>
+                    Назва задачі
+                    <input type="text" v-model="newTaskTitle">
+                </label>
+            </div>
+            <div>
+                <label>
+                    Пріоритет задачі
+                    <input type="number" v-model="newTaskPriority">
+                </label>
+            </div>
+            <button @click="onAddTask">Додати задачу</button>
+        </div>
+        <hr />
+        <div>
+            <label>
+                Назва для фільтрації
+                <input type="text" v-model="searchText">
+            </label>
+        </div>
+
+        <table v-if="filterdTaskList.length>0" border="2px">
+            <tr>
+                <th>Назва задачі</th>
+                <th>Пріоритет</th>
+            </tr>
+            <tr v-for="task in filterdTaskList" :key="task.id">
+                <td>{{task.title}}</td>
+                <td>{{task.priority}}</td>
+                <td>
+                    <button @click="onCompleteTask(task.id)">Виконано</button>
+                </td>
+                <td>
+                    <button @click="onDelete(task.id)">X</button>
+                </td>
+            </tr>
+        </table>
+        <div v-else>Вибачте. Задач немає</div>
+        <hr>
+        <h1>Виконані задачі</h1>
+        <ul>
+            <li v-for="task in completedTaskList" :key="task.id">
+                {{task.title}}
+            </li>
+        </ul>
+    </div>
+    
+    <script>
+      Vue.createApp({
+        data() {
+          return {
+              searchText:null,
+              newTaskTitle:null,
+              newTaskPriority:null,
+            taskList: [
+                {
+                    id:1,
+                    title:'Drink coffee',
+                    priority: 2,
+                },
+                {
+                    id:2,
+                    title:'Drink 2 coffee',
+                    priority: 4,
+                },
+                {
+                    id:3,
+                    title:'Drink 3 coffee',
+                    priority: 7,
+                },
+                {
+                    id:4,
+                    title:'Turn on laptop',
+                    priority: 2,
+                },
+                {
+                    id:5,
+                    title:'DTurn off laptop',
+                    priority: 2,
+                }
+            ],
+                completedTaskList: []
+          }
+        },
+        computed: {
+            filterdTaskList() {
+                if(this.searchText){
+                const s = this.searchText.toLowerCase()
+                return this.taskList.filter(task=>task.title.includes(this.searchText))
+                }
+                else return this.taskList
+            }
+        },
+        methods:{
+            onAddTask(){
+                this.taskList.push(
+                    {
+                        id:new Date().getTime(),
+                        title: this.newTaskTitle,
+                        priority: this.newTaskPriority
+                    }
+                )
+            },
+            onDelete(idToRemove){
+                this.taskList = this.taskList.filter(task=>task.id!==idToRemove)
+            },
+            onCompleteTask(taskIdToComplete){
+                    const taskIndex = this.taskList.findIndex(task=> 
+                    task.id===taskIdToComplete)
+                if(taskIndex!== -1){
+                    this.completedTaskList.push(this.taskList[taskIndex])
+                    this.taskList.splice(taskIndex,1)
+                }
+                }
+        }
+      }).mount('#app')
+    </script>
+</body>
+</html>
