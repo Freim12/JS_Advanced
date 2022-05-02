@@ -14,11 +14,12 @@
         name:'ProductPriceEditor',
         props: {
             productPrice: {
-                type: Array,
-                default: () => []
+                type: Object,
+                default: () => ({})
             },
 
         },
+        
     }
 </script>
 
