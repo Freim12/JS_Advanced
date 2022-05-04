@@ -12,7 +12,7 @@
 
 <script>
 import GameItem from "./GameItem.vue";
-import store from "@/store";
+import {mapGetters} from 'vuex'
     export default {
         name: "GamesList",
         components: {
@@ -21,13 +21,16 @@ import store from "@/store";
         data() {
             return {
                 gamesList: [
-
+                    
                 ]
             }
         },
+        computed: {
+            ...mapGetters(['getGamesList'])
+        },
        methods: {
             onLoad() {
-            this.gamesList = store.readProducts();
+            this.gamesList = this.getGamesList;
             },
             onEdit(id) {
             this.$router.push({

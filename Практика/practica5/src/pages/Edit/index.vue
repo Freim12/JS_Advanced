@@ -36,7 +36,9 @@
 </template>
 
 <script>
-import store from "@/store";
+import { v4 as uuidv4 } from "uuid";
+import {mapGetters} from 'vuex'
+import {mapActions} from 'vuex'
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Edit",
@@ -59,37 +61,61 @@ export default {
     currentProductId() {
       return this.$route.params.id;
     },
+    ...mapGetters(['getGamesList'])
   },
 
   methods: {
     onSave() {
-      if (this.currentProductId)
-        store.updateProduct({
+      // eslint-disable-next-line no-unused-vars
+      let gamesList = this.getGamesList
+      if (this.currentProductId){
+        // eslint-disable-next-line no-unused-vars
+        const games = {
           id: this.currentProductId,
           url: this.url,
           title: this.title,
-          price: this.price,
-        });
-      else store.addProduct(this.title, this.price, this.url);
+          price: this.price
+        };
+            const productIndex = gamesList.findIndex(
+                (item) => item.id === games.id
+              );
+              if (productIndex >= 0)
+                gamesList[productIndex] = {
+                  ...games,
+                };
+        this.updateGamesList(gamesList)
+      }
+      else {
+        gamesList.push(this.id = uuidv4(), this.title, this.price, this.url);
+        this.updateGamesList(gamesList)
+      }
 
       this.$router.push({ name: "home" });
     },
       onDelete() {
-        if (this.currentProductId)
-          store.deleteProduct(this.currentProductId);
+        if (this.currentProductId){
+          let gamesList = this.getGamesList;
+          // eslint-disable-next-line no-unused-vars
+          gamesList = gamesList.filter((item) => item.id !== this.currentProductId);
+          this.updateGamesList(gamesList)
+        }
         this.$router.push({ name: "home" });
     },
     addPhoto(url){
       this.urlPhoto = url
-    }
+    },
+    ...mapActions(['updateGamesList'])
   },
 
   mounted() {
     if (this.currentProductId) {
-      const product = store.getProductById(this.currentProductId);
-      this.url = product.url;
-      this.title = product.title;
-      this.price = product.price;
+      // eslint-disable-next-line no-unused-vars
+      let gamesList = this.getGamesList;
+      // eslint-disable-next-line no-unused-vars
+      const games = gamesList.find((item) => item.id === this.currentProductId);
+      this.url = games.url;
+      this.title = games.title;
+      this.price = games.price;
     }
   },
 };
