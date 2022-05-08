@@ -1,0 +1,20 @@
+<template>
+    <div>
+        <games-list />
+    </div>
+</template>
+
+<script>
+import GamesList from "@/components/GamesList/index.vue";
+    export default {
+        // eslint-disable-next-line vue/multi-word-component-names
+        name: "Home",
+        components: {
+            GamesList
+        },
+    };
+</script>
+
+<style lang="scss" scoped>
+
+</style>

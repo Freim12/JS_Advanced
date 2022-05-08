@@ -1,16 +1,14 @@
 <template>
   <div>
-    <games-list />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import GamesList from './components/GamesList/index.vue'
 
 export default {
   name: 'App',
   components: {
-    GamesList
   }
 }
 </script>
