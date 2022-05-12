@@ -1,0 +1,4 @@
+vuex: npm install vuex@next --save
+router: npm install vue-router@4
+uuid: npm i uuid
+SCSS: npm   install   –D   sass-loader@^10 sass
