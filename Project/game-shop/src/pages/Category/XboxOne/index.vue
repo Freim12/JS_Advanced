@@ -1,16 +1,21 @@
 <template>
     <div>
-        <games-list />
+        <main-master-page>
+            <router-link class="router-link" to="/">Home</router-link>
+            <games-list />
+        </main-master-page>
     </div>
 </template>
 
 <script>
+import MainMasterPage from '@/masterpages/MainMasterPage.vue';
 import GamesList from "@/components/GamesList/index.vue";
     export default {
         // eslint-disable-next-line vue/multi-word-component-names
-        name: "Home",
+        name: "XboxOne",
         components: {
-            GamesList
+            GamesList,
+            MainMasterPage
         },
     };
 </script>

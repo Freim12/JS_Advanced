@@ -1,4 +1,16 @@
 vuex: npm install vuex@next --save
+vue-cli
 router: npm install vue-router@4
 uuid: npm i uuid
-SCSS: npm   install   –D   sass-loader@^10 sass
+SCSS: npm install -D sass-loader node-sass
+axios: npm i axios
+vuetify: 
+{ Готовий проект
+npm install vuetify
+npm install sass@~1.32 sass-loader deepmerge -D
+}
+{ Новий проект
+vue create my-app
+vue add vuetify
+}
+

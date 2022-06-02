@@ -3,14 +3,14 @@ import { createRouter, createWebHashHistory } from "vue-router";
 // These can be imported from other files
 import Home from "@/pages/Home";
 import xboxOne from "@/pages/Category/XboxOne/index.vue";
-import gameXboxOne from "@/pages/Category/XboxOne/gameXboxOne.vue";
+import gameXboxOne from "@/pages/Category/XboxOne/XboxOneGame/XboxOneGame.vue";
 
 // 2. Define some routes
 // Each route should map to a component.
 // We'll talk about nested routes later.
 const routes = [
   { path: "/", component: Home, name: "home" },
-  {path: "/category/xboxOne", component: xboxOne, name: "xboxOne" },
+  {path: "/category/xboxOne/", component: xboxOne, name: "xboxOne" },
   {path: "/category/xboxOne/:id?", component: gameXboxOne, name: "gameXboxOne" },
 ];
 
